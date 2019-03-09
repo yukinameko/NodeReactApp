@@ -34,4 +34,16 @@ router.post('/:id([0-9]+)', (req, res) => {
 	});
 })
 
+router.post('/new', (req, res) => {
+	const params = req.params;
+	console.log(req.body);
+	if(req.body != null){
+		const Users = new SQL('users');
+		Users.connect();
+		Users.insert(req.body);
+		Users.close();
+		res.send('ok');
+	}
+})
+
 module.exports = router;

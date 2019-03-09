@@ -54,6 +54,21 @@ module.exports = class SQL {
 		return this;
 	}
 
+	insert(columns) {
+		let q = `insert into ${this[database]}.${this[table]}`;
+		let nameStr = ' (';
+		let valueStr = 'values (';
+		for(let [name, value] of Object.entries(columns)){
+			nameStr += `${name}, `;
+			valueStr += (typeof value == 'string') ? `'${value}', ` : `${value}, `;
+		}
+		nameStr = nameStr.slice(0, -2) + ') ';
+		valueStr = valueStr.slice(0, -2) + ')';
+		q += nameStr + valueStr;
+		console.log(q);
+		this[con].query(q);
+	}
+
 	run(callback) {
 		this[con].query(this[query], callback);
 	}
