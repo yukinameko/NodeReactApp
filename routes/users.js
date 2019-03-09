@@ -46,4 +46,29 @@ router.post('/new', (req, res) => {
 	}
 })
 
+router.post('/update/:id([0-9]+)', (req, res) => {
+	const params = req.params;
+	console.log(req.body);
+	if(req.body != null){
+		const Users = new SQL('users');
+		Users.connect();
+		Users.update(req.body).where({id:params.id}).run((err, result) => {
+			Users.close();
+			res.send('update');
+		});
+	}
+})
+
+router.post('/delete/:id([0-9]+)', (req, res) => {
+	const params = req.params;
+	const Users = new SQL('users');
+	Users.connect();
+	Users.delete().where({id:params.id}).run((err, result) => {
+		Users.close();
+		res.send('deleted');
+	});
+})
+
+
+
 module.exports = router;

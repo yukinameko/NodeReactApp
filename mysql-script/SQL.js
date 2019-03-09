@@ -69,6 +69,22 @@ module.exports = class SQL {
 		this[con].query(q);
 	}
 
+	update(columns) {
+		let q = `update ${this[database]}.${this[table]} set`;
+		for(let [name, value] of Object.entries(columns)){
+			q += ` ${name} =`;
+			q += (typeof value == 'string') ? ` '${value}',` : ` ${value},`;
+		}
+		this[query] = q.slice(0, -1);
+		return this;
+	}
+
+	delete() {
+		let q = `delete from ${this[database]}.${this[table]}`;
+		this[query] = q;
+		return this;
+	}
+
 	run(callback) {
 		this[con].query(this[query], callback);
 	}
